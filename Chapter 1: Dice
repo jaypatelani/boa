@@ -1,1 +1,22 @@
+Write this peice of code in your favourite text writer as exactly as showd below. save file as "Dice.adb" then run "gnatmake Dice.adb" at your
+terminal/command prompt to create executable file.Now you should be able to see "Dice" file which you can execute from terminal with "./Dice" Magic if
+everything worked smooth you should be able to see random dice number.
 
+CODE:
+with ada.Text_IO; use Ada.Text_IO;
+with ada.numerics.discrete_random;
+
+procedure Dice is
+   type DiceRange is new Integer range 1..6;
+   package DiceRand_Int is new ada.numerics.discrete_random(DiceRange);
+   use DiceRand_Int;
+   gen : Generator;
+   num : DiceRange;
+begin
+   reset(gen);
+   num := random(gen);
+   put_line(DiceRange'Image(num));
+end Dice;
+
+
+ 
