@@ -1,0 +1,56 @@
+----NOTE---- WORK IN PROGRESS CODE
+
+
+with Gtk.Main;
+with Ada.Text_IO;
+with Ada.Numerics.Discrete_Random;
+with Gtk.Widgets;
+
+procedure Roll_Dice is
+
+   type DiceRange is new Integer range 1..6;
+   package DiceRand_Int is new Ada.Numerics.Discrete_Random(DiceRange);
+   use DiceRand_Int;
+   gen : Generator;
+   num : DiceRange;
+   label : Gtk_Label;
+   button : Gtk_Button;
+   window : Gtk_Window;
+   vbox : Gtk_VBox;
+
+begin
+
+   -- Initialize the GUI framework
+   Gtk.Main.Init;
+
+   -- Create the main window
+   window := Gtk_Window.Create;
+   window.Set_Title("Dice Roll");
+   window.Set_Default_Size(300, 200);
+
+   -- Create the main layout container (vertical box)
+   vbox := Gtk_VBox.Create(False, 0);
+   window.Add(vbox);
+
+   -- Create the label that displays the dice roll result
+   label := Gtk_Label.Create("Roll the dice");
+   vbox.Pack_Start(label, True, True, 10);
+
+   -- Create the button to initiate the dice roll
+   button := Gtk_Button.Create("Roll");
+   vbox.Pack_End(button, False, False, 10);
+
+   -- Connect the button click signal to the roll action
+   button.Set_Clicked(button, -- Anonymous procedure to handle the roll action
+     procedure (btn : access Gtk_Button_Record) is
+     begin
+       reset(gen);
+       num := Random(gen);
+       label.Set_Label(DiceRange'Image(num));
+     end);
+
+   -- Show the main window and start the GUI event loop
+   window.Show_All;
+   Gtk.Main.Main;
+
+end Roll_Dice;
