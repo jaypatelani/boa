@@ -18,5 +18,45 @@ begin
    put_line(DiceRange'Image(num));
 end Dice;
 
+CODE EXPLANATION:
+This Ada code simulates the rolling of a six-sided dice. Here's a breakdown of the code:
+Header:
+with ada.Text_IO; use Ada.Text_IO;
+with ada.numerics.discrete_random;
 
+ * Imports the Text_IO package for input/output operations.
+ * Imports the discrete_random package from the numerics library for generating random numbers.
+Procedure Declaration:
+procedure Dice is
+
+ * Defines a procedure named Dice.
+Type Declaration:
+   type DiceRange is new Integer range 1..6;
+
+ * Creates a new subtype DiceRange of the Integer type, restricting the range to values from 1 to 6. This ensures that the generated random numbers are within the valid range for a dice.
+Package Instantiation:
+   package DiceRand_Int is new ada.numerics.discrete_random(DiceRange);
+   use DiceRand_Int;
+
+ * Instantiates a new package named DiceRand_Int from the discrete_random package, specifying DiceRange as the range of values for the random numbers.
+ * Uses the DiceRand_Int package to make its functions and types directly accessible within the Dice procedure.
+Variable Declarations:
+   gen : Generator;
+   num : DiceRange;
+
+ * Declares a variable gen of type Generator, which is used to generate random numbers.
+ * Declares a variable num of type DiceRange to store the randomly generated value.
+Procedure Body:
+begin
+   reset(gen);
+   num := random(gen);
+   put_line(DiceRange'Image(num));
+end Dice;
+
+ * Resets the random number generator using reset(gen). This ensures that the generated numbers are truly random.
+ * Generates a random number within the DiceRange using num := random(gen). The random function takes the generator gen as input and returns a random value within the specified range.
+ * Prints the generated random number using put_line(DiceRange'Image(num)). The Image attribute converts the num value to a string representation, and put_line prints the string to the console.
+Execution:
+When this code is executed, it will generate a random number between 1 and 6 and print it to the console, simulating a dice roll. Each time the code is run, a different random number will be gene
+rated.
  
