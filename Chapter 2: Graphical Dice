@@ -54,3 +54,112 @@ begin
    Gtk.Main.Main;
 
 end Roll_Dice;
+
+CODE EXPLANATION:
+
+This Ada code creates a simple graphical user interface (GUI) using the GTK+ toolkit to simulate a dice roll. Here's a breakdown of the code:
+Header:
+with Gtk.Main;
+with Ada.Text_IO;
+with Ada.Numerics.Discrete_Random;
+with Gtk.Widgets;
+
+ * Imports necessary packages for the GUI framework (Gtk.Main and Gtk.Widgets), input/output operations (Ada.Text_IO), and random number generation (Ada.Numerics.Discrete_Random).
+Procedure Declaration:
+procedure Roll_Dice is
+
+ * Defines a procedure named Roll_Dice to encapsulate the GUI logic.
+Variable Declarations:
+   type DiceRange is new Integer range 1..6;
+   package DiceRand_Int is new Ada.Numerics.Discrete_Random(DiceRange);
+   use DiceRand_Int;
+   gen : Generator;
+   num : DiceRange;
+   label : Gtk_Label;
+   button : Gtk_Button;
+   window : Gtk_Window;
+   vbox : Gtk_VBox;
+
+ * Declares variables for random number generation (gen, num), GUI elements (label, button, window, and a vertical box layout), and a type for the dice range.
+Procedure Body:
+begin
+
+   -- Initialize the GUI framework
+   Gtk.Main.Init;
+
+   -- Create the main window
+   window := Gtk_Window.Create;
+   window.Set_Title("Dice Roll");
+   window.Set_Default_Size(300, 200);
+
+   -- Create the main layout container (vertical box)
+   vbox := Gtk_VBox.Create(False, 0);
+   window.Add(vbox);
+
+   -- Create the label that displays the dice roll result
+   label := Gtk_Label.Create("Roll the dice");
+   vbox.Pack_Start(label, True, True, 10);
+
+   -- Create the button to initiate the dice roll
+   button := Gtk_Button.Create("Roll");
+   vbox.Pack_End(button, False, False, 10);
+
+   -- Connect the button click signal to the roll action
+   button.Set_Clicked(button, -- Anonymous procedure to handle the roll action
+     procedure (btn : access Gtk_Button_Record) is
+     begin
+       reset(gen);
+       num := Random(gen);
+       label.Set_Label(DiceRange'Image(num));
+     end);
+
+   -- Show the main window and start the GUI event loop
+   window.Show_All;
+   Gtk.Main.Main;
+
+end Roll_Dice;
+
+ * Initializes the GTK+ framework using Gtk.Main.Init.
+ * Creates a main window with a title and size.
+ * Creates a vertical box layout to organize the GUI elements.
+ * Creates a label to display the dice roll result.
+ * Creates a button to initiate the dice roll.
+ * Connects the button's clicked signal to an anonymous procedure that generates a random number and updates the label with the result.
+ * Shows the main window and starts the GTK+ event loop using Gtk.Main.Main.
+This code effectively creates a simple GUI application that simulates a dice roll. When the user clicks the "Roll" button, a random number between 1 and 6 is generated and displayed in the label.
+
+Here's a breakdown of what the code does:
+ * Imports necessary packages:
+   * Gtk.Main: For initializing the GTK+ framework.
+   * Ada.Text_IO: For input/output operations (not used in this specific code).
+   * Ada.Numerics.Discrete_Random: For generating random numbers.
+   * Gtk.Widgets: For creating GUI components.
+ * Defines a procedure:
+   * Roll_Dice encapsulates the GUI logic.
+ * Declares variables:
+   * DiceRange: A subtype of Integer defining the range for the dice roll (1 to 6).
+   * DiceRand_Int: A package instantiated from Ada.Numerics.Discrete_Random to generate random numbers within the specified range.
+   * gen: A generator for random numbers.
+   * num: To store the randomly generated dice roll result.
+   * label: A GTK+ label to display the dice roll result.
+   * button: A GTK+ button to trigger the dice roll.
+   * window: The main GTK+ window.
+   * vbox: A vertical box layout to organize the GUI elements.
+ * Initializes the GTK+ framework:
+   * Gtk.Main.Init is called to set up the GTK+ environment.
+ * Creates the main window:
+   * A new GTK+ window is created with a title and a default size.
+ * Creates the layout:
+   * A vertical box layout (vbox) is created to arrange the label and button vertically.
+ * Creates the label and button:
+   * A label is created to display the dice roll result, initially set to "Roll the dice".
+   * A button is created with the label "Roll".
+ * Connects the button to the roll action:
+   * The button's clicked signal is connected to an anonymous procedure that:
+     * Resets the random number generator.
+     * Generates a random number.
+     * Updates the label to display the dice roll result.
+ * Shows the window and starts the event loop:
+   * window.Show_All makes the window visible.
+   * Gtk.Main.Main starts the GTK+ event loop, allowing the GUI to respond to user interactions.
+Overall, the code correctly creates a simple GUI application that simulates a dice roll. It effectively uses the GTK+ toolkit to create the GUI elements, generates random numbers, and updates the display based on user input.
